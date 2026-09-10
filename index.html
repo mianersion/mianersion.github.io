@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>九尾网-热门漫画在线阅读与动漫资讯分享平台</title>
+    <meta name="description" content="九尾网是一个专注漫画与动漫的综合分享平台，提供热门漫画分类、新番推荐、漫画资讯、角色介绍与在线阅读指南，打造属于二次元爱好者的内容社区。">
+    <meta name="keywords" content="九尾网,漫画,动漫,在线漫画,新番,二次元,漫画推荐,漫画资讯,动漫社区">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: #f7f4f9;
+            color: #2d2a3a;
+            line-height: 1.6;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        ul {
+            list-style: none;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 头部 */
+        .site-header {
+            background-color: #1f1e2e;
+            padding: 14px 0;
+            border-bottom: 3px solid #b78cff;
+        }
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .logo h1 span {
+            color: #b78cff;
+        }
+        .logo p {
+            font-size: 0.8rem;
+            color: #a9a3c0;
+            letter-spacing: 2px;
+            margin-top: 2px;
+        }
+        .main-nav ul {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+        .main-nav ul li a {
+            color: #e3ddf5;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .main-nav ul li a:hover,
+        .main-nav ul li a.active {
+            color: #fff;
+            border-bottom-color: #b78cff;
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #2f2c42;
+            border-radius: 30px;
+            padding: 4px 6px;
+            width: 240px;
+        }
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 6px 12px;
+            color: #fff;
+            outline: none;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+        .search-box button {
+            background: #b78cff;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 16px;
+            color: #1f1e2e;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-box button:hover {
+            background: #cfaeff;
+        }
+
+        /* 首屏横幅 */
+        .hero-section {
+            background: linear-gradient(145deg, #302c4a 0%, #1d1b2b 100%);
+            padding: 50px 0;
+            color: #fff;
+        }
+        .hero-grid {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .hero-text {
+            flex: 1 1 360px;
+        }
+        .hero-text h2 {
+            font-size: 2.6rem;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+        .hero-text h2 span {
+            color: #b78cff;
+        }
+        .hero-text p {
+            font-size: 1.1rem;
+            color: #c8c0e0;
+            margin-bottom: 28px;
+            max-width: 480px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+        .btn-primary {
+            background: #b78cff;
+            color: #1f1e2e;
+        }
+        .btn-primary:hover {
+            background: #cba8ff;
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            border: 2px solid #b78cff;
+            color: #fff;
+        }
+        .btn-outline:hover {
+            background: #b78cff;
+            color: #1f1e2e;
+        }
+        .hero-art {
+            flex: 1 1 300px;
+            display: flex;
+            justify-content: center;
+        }
+        .hero-art .art-box {
+            background: rgba(183, 140, 255, 0.15);
+            border-radius: 30px;
+            padding: 30px 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            width: 100%;
+            max-width: 340px;
+        }
+        .hero-art .art-box .emoji-big {
+            font-size: 4.5rem;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+        .hero-art .art-box h3 {
+            color: #fff;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+        .hero-art .art-box p {
+            color: #b9b1d6;
+            font-size: 0.9rem;
+        }
+
+        /* 分类快捷入口 */
+        .category-strip {
+            padding: 30px 0;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        .category-strip .container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .cat-item {
+            flex: 1 1 130px;
+            text-align: center;
+            background: #f7f3ff;
+            border-radius: 20px;
+            padding: 16px 8px;
+            transition: all 0.2s;
+        }
+        .cat-item:hover {
+            background: #e9dfff;
+            transform: translateY(-3px);
+        }
+        .cat-item .cat-icon {
+            font-size: 2.2rem;
+        }
+        .cat-item h4 {
+            font-size: 0.95rem;
+            margin-top: 6px;
+            color: #3d3652;
+        }
+
+        /* 通用区块 */
+        .section-block {
+            padding: 44px 0;
+        }
+        .section-title {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            border-bottom: 2px solid #e6def5;
+            padding-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .section-title h2 {
+            font-size: 1.8rem;
+            color: #1f1e2e;
+            position: relative;
+            padding-left: 18px;
+        }
+        .section-title h2::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 6px;
+            height: 24px;
+            background: #b78cff;
+            border-radius: 10px;
+        }
+        .section-title a.more {
+            color: #7a6a9a;
+            font-size: 0.9rem;
+        }
+        .section-title a.more:hover {
+            color: #4b3e6b;
+        }
+
+        /* 卡片网格 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 22px;
+        }
+        .comic-card {
+            background: #fff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #f0eaf7;
+        }
+        .comic-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 26px rgba(0,0,0,0.08);
+        }
+        .card-cover {
+            background: linear-gradient(135deg, #b78cff, #6e5a9e);
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: rgba(255,255,255,0.8);
+            position: relative;
+        }
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(31,30,46,0.8);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            backdrop-filter: blur(2px);
+        }
+        .card-info {
+            padding: 16px;
+        }
+        .card-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+            color: #2d2a3a;
+        }
+        .card-info .meta {
+            font-size: 0.8rem;
+            color: #8b83a0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .card-info p {
+            font-size: 0.85rem;
+            color: #6f6785;
+            margin-top: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* 双栏信息 */
+        .double-column {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
+        }
+        .info-panel {
+            background: #fff;
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid #f0eaf7;
+        }
+        .info-panel h3 {
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+            color: #1f1e2e;
+        }
+        .rank-list li {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f3eff8;
+            gap: 12px;
+        }
+        .rank-list li:last-child {
+            border-bottom: none;
+        }
+        .rank-num {
+            width: 28px;
+            height: 28px;
+            background: #efebf7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #6a5c8c;
+            font-size: 0.9rem;
+        }
+        .rank-list li:nth-child(-n+3) .rank-num {
+            background: #b78cff;
+            color: #fff;
+        }
+        .rank-name {
+            flex: 1;
+            font-weight: 500;
+        }
+        .rank-tag {
+            font-size: 0.8rem;
+            background: #f0eaff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            color: #6a5c8c;
+        }
+
+        /* 资讯列表 */
+        .news-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f3eff8;
+            display: flex;
+            gap: 12px;
+            align-items: baseline;
+        }
+        .news-list li:last-child {
+            border-bottom: none;
+        }
+        .news-date {
+            font-size: 0.75rem;
+            color: #9b92ad;
+            background: #f3eff8;
+            padding: 2px 10px;
+            border-radius: 30px;
+            white-space: nowrap;
+        }
+        .news-list a {
+            color: #3d3652;
+            font-size: 0.95rem;
+        }
+        .news-list a:hover {
+            color: #b78cff;
+        }
+
+        /* 阅读指南 */
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin-top: 12px;
+        }
+        .guide-item {
+            background: #fff;
+            padding: 24px;
+            border-radius: 20px;
+            border-left: 5px solid #b78cff;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.03);
+        }
+        .guide-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #292639;
+        }
+        .guide-item p {
+            font-size: 0.9rem;
+            color: #6f6785;
+        }
+
+        /* 常见问题 */
+        .faq-panel {
+            background: #fff;
+            border-radius: 24px;
+            padding: 30px;
+        }
+        .faq-item {
+            margin-bottom: 18px;
+            border-bottom: 1px solid #f3eff8;
+            padding-bottom: 16px;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .faq-question {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: #2d2a3a;
+            margin-bottom: 6px;
+        }
+        .faq-answer {
+            color: #6f6785;
+            font-size: 0.95rem;
+        }
+
+        /* 页脚 */
+        .site-footer {
+            background: #1f1e2e;
+            color: #b9b1d6;
+            padding: 36px 0 20px;
+            margin-top: 30px;
+        }
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 20px;
+        }
+        .footer-col h5 {
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+        .footer-col ul li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        .footer-col ul li a:hover {
+            color: #b78cff;
+        }
+        .copyright {
+            text-align: center;
+            font-size: 0.8rem;
+            border-top: 1px solid #2f2c42;
+            padding-top: 18px;
+            color: #8b83a0;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1020px) {
+            .double-column {
+                grid-template-columns: 1fr;
+            }
+            .header-inner {
+                gap: 14px;
+            }
+            .main-nav ul {
+                gap: 16px;
+            }
+        }
+        @media (max-width: 700px) {
+            .hero-text h2 {
+                font-size: 1.8rem;
+            }
+            .search-box {
+                width: 100%;
+            }
+            .category-strip .container {
+                gap: 8px;
+            }
+            .cat-item {
+                flex: 1 1 80px;
+                padding: 10px 4px;
+            }
+            .section-title h2 {
+                font-size: 1.4rem;
+            }
+            .logo h1 {
+                font-size: 1.6rem;
+            }
+            .main-nav ul {
+                gap: 10px;
+                margin-top: 6px;
+            }
+            .main-nav ul li a {
+                font-size: 0.9rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero-grid {
+                gap: 24px;
+            }
+            .btn {
+                padding: 10px 20px;
+            }
+            .card-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+        }
+    </style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container header-inner">
+        <div class="logo">
+            <h1>九尾<span>网</span></h1>
+            <p>二次元 · 漫画 · 动漫社区</p>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#" class="active">首页</a></li>
+                <li><a href="#">漫画分类</a></li>
+                <li><a href="#">新番连载</a></li>
+                <li><a href="#">动漫资讯</a></li>
+                <li><a href="#">排行榜</a></li>
+                <li><a href="#">阅读指南</a></li>
+            </ul>
+        </nav>
+        <div class="search-box">
+            <input type="text" placeholder="搜索漫画或动漫...">
+            <button>搜</button>
+        </div>
+    </div>
+</header>
+
+<section class="hero-section">
+    <div class="container hero-grid">
+        <div class="hero-text">
+            <h2>发现好漫画<br>就在<span>九尾网</span></h2>
+            <p>无论是热血少年、恋爱日常，还是悬疑奇幻，这里都有你想看的。每日更新推荐，带你找到下一部心头好。</p>
+            <div class="btn-group">
+                <a href="#" class="btn btn-primary">开始阅读</a>
+                <a href="#" class="btn btn-outline">浏览新番</a>
+            </div>
+        </div>
+        <div class="hero-art">
+            <div class="art-box">
+                <div class="emoji-big">🦊📚</div>
+                <h3>九尾书库</h3>
+                <p>收录千部人气漫画<br>分类清晰 · 更新及时</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="category-strip">
+    <div class="container">
+        <div class="cat-item">
+            <div class="cat-icon">🔥</div>
+            <h4>热血</h4>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon">💕</div>
+            <h4>恋爱</h4>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon">🌙</div>
+            <h4>奇幻</h4>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon">🕵️</div>
+            <h4>悬疑</h4>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon">🤣</div>
+            <h4>搞笑</h4>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon">⚽</div>
+            <h4>运动</h4>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon">👾</div>
+            <h4>科幻</h4>
+        </div>
+    </div>
+</div>
+
+<main>
+    <!-- 热门漫画推荐 -->
+    <section class="section-block">
+        <div class="container">
+            <div class="section-title">
+                <h2>热门漫画推荐</h2>
+                <a href="#" class="more">查看全部 →</a>
+            </div>
+            <div class="card-grid">
+                <div class="comic-card">
+                    <div class="card-cover">
+                        <span>🦊</span>
+                        <span class="card-badge">连载中</span>
+                    </div>
+                    <div class="card-info">
+                        <h3>九尾的契约</h3>
+                        <div class="meta"><span>奇幻</span><span>更新至 87 话</span></div>
+                        <p>少年意外唤醒古老九尾，签订契约后卷入异界纷争。</p>
+                    </div>
+                </div>
+                <div class="comic-card">
+                    <div class="card-cover">
+                        <span>⚔️</span>
+                        <span class="card-badge">高人气</span>
+                    </div>
+                    <div class="card-info">
+                        <h3>剑与灵歌</h3>
+                        <div class="meta"><span>冒险</span><span>更新至 132 话</span></div>
+                        <p>以剑为引，以灵为歌，踏上寻找失落圣地的旅途。</p>
+                    </div>
+                </div>
+                <div class="comic-card">
+                    <div class="card-cover">
+                        <span>🌆</span>
+                        <span class="card-badge">完结</span>
+                    </div>
+                    <div class="card-info">
+                        <h3>都市夜行录</h3>
+                        <div class="meta"><span>都市</span><span>全 96 话</span></div>
+                        <p>夜色之下，普通青年与神秘房客的都市奇谈。</p>
+                    </div>
+                </div>
+                <div class="comic-card">
+                    <div class="card-cover">
+                        <span>🍡</span>
+                        <span class="card-badge">甜宠</span>
+                    </div>
+                    <div class="card-info">
+                        <h3>邻座小甜心</h3>
+                        <div class="meta"><span>恋爱</span><span>更新至 44 话</span></div>
+                        <p>校园里的小小悸动，从邻座开始的心动日常。</p>
+                    </div>
+                </div>
+                <div class="comic-card">
+                    <div class="card-cover">
+                        <span>🧩</span>
+                        <span class="card-badge">烧脑</span>
+                    </div>
+                    <div class="card-info">
+                        <h3>解谜侦探社</h3>
+                        <div class="meta"><span>悬疑</span><span>更新至 55 话</span></div>
+                        <p>每个谜题背后都藏着一段被遗忘的真相。</p>
+                    </div>
+                </div>
+                <div class="comic-card">
+                    <div class="card-cover">
+                        <span>🚀</span>
+                        <span class="card-badge">新作</span>
+                    </div>
+                    <div class="card-info">
+                        <h3>星航日志</h3>
+                        <div class="meta"><span>科幻</span><span>更新至 18 话</span></div>
+                        <p>在宇宙边缘，一封来自未知星域的求救信号。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 双栏：新番连载 + 人气榜单 -->
+    <section class="section-block" style="padding-top:0;">
+        <div class="container double-column">
+            <div class="info-panel">
+                <h3>📺 本周新番连载</h3>
+                <ul class="news-list">
+                    <li><span class="news-date">周一</span><a href="#">《星航日志》第 18 话：信号来源</a></li>
+                    <li><span class="news-date">周二</span><a href="#">《剑与灵歌》第 132 话：灵歌觉醒</a></li>
+                    <li><span class="news-date">周三</span><a href="#">《九尾的契约》第 87 话：封印松动</a></li>
+                    <li><span class="news-date">周四</span><a href="#">《解谜侦探社》第 55 话：消失的钥匙</a></li>
+                    <li><span class="news-date">周五</span><a href="#">《邻座小甜心》第 44 话：文化祭准备</a></li>
+                    <li><span class="news-date">周六</span><a href="#">《都市夜行录》番外篇</a></li>
+                </ul>
+            </div>
+            <div class="info-panel">
+                <h3>🏆 人气榜单 TOP5</h3>
+                <ul class="rank-list">
+                    <li><span class="rank-num">1</span><span class="rank-name">九尾的契约</span><span class="rank-tag">奇幻</span></li>
+                    <li><span class="rank-num">2</span><span class="rank-name">剑与灵歌</span><span class="rank-tag">冒险</span></li>
+                    <li><span class="rank-num">3</span><span class="rank-name">邻座小甜心</span><span class="rank-tag">恋爱</span></li>
+                    <li><span class="rank-num">4</span><span class="rank-name">解谜侦探社</span><span class="rank-tag">悬疑</span></li>
+                    <li><span class="rank-num">5</span><span class="rank-name">星航日志</span><span class="rank-tag">科幻</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 漫画阅读指南 -->
+    <section class="section-block" style="background:#f0eaf7;">
+        <div class="container">
+            <div class="section-title">
+                <h2>漫画阅读指南</h2>
+                <a href="#" class="more">更多帮助 →</a>
+            </div>
+            <div class="guide-grid">
+                <div class="guide-item">
+                    <h4>📖 如何找漫画</h4>
+                    <p>通过顶部搜索框输入漫画名或作者，也可以按分类浏览，或查看排行榜发现热门作品。</p>
+                </div>
+                <div class="guide-item">
+                    <h4>🔄 更新提醒</h4>
+                    <p>关注喜欢的作品后，新章节更新会在首页“最近更新”中展示，方便你及时追更。</p>
+                </div>
+                <div class="guide-item">
+                    <h4>📱 多端阅读</h4>
+                    <p>九尾网页面采用响应式设计，手机、平板、电脑均可流畅阅读，随时随地享受漫画。</p>
+                </div>
+                <div class="guide-item">
+                    <h4>💬 社区交流</h4>
+                    <p>每部漫画都有讨论区，可以分享感想、推荐同好，参与话题讨论让追漫更有趣。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 常见问题 FAQ -->
+    <section class="section-block">
+        <div class="container">
+            <div class="section-title">
+                <h2>常见问题</h2>
+            </div>
+            <div class="faq-panel">
+                <div class="faq-item">
+                    <div class="faq-question">Q：九尾网上的漫画可以免费阅读吗？</div>
+                    <div class="faq-answer">九尾网提供大量免费阅读的漫画内容，部分连载作品可能设置最新话限时免费或需要登录后阅读，具体以页面提示为准。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Q：如何获取漫画更新通知？</div>
+                    <div class="faq-answer">在漫画详情页点击“订阅更新”后，作品更新时会在首页“我的订阅”模块中显示提醒。建议保持浏览器通知权限开启。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Q：在手机上阅读体验如何？</div>
+                    <div class="faq-answer">九尾网针对移动端做了适配优化，支持横滑翻页、双指缩放，并根据屏幕尺寸自动调整排版，手机阅读同样舒适。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Q：发现内容错误或链接失效怎么办？</div>
+                    <div class="faq-answer">可通过页面右下角的“问题反馈”入口提交，或联系客服邮箱 support@jiuwei.example.com，我们会尽快处理并修复。</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h5>九尾网</h5>
+                <ul>
+                    <li><a href="#">关于我们</a></li>
+                    <li><a href="#">加入我们</a></li>
+                    <li><a href="#">联系合作</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>内容分类</h5>
+                <ul>
+                    <li><a href="#">热血漫画</a></li>
+                    <li><a href="#">恋爱漫画</a></li>
+                    <li><a href="#">悬疑漫画</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>帮助中心</h5>
+                <ul>
+                    <li><a href="#">新手指南</a></li>
+                    <li><a href="#">阅读设置</a></li>
+                    <li><a href="#">版权声明</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>关注我们</h5>
+                <ul>
+                    <li><a href="#">微博</a></li>
+                    <li><a href="#">微信公众号</a></li>
+                    <li><a href="#">贴吧专区</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 九尾网 jiuwei.example.com 保留所有权利 | 本站内容仅供学习交流，请支持正版漫画。
+        </div>
+    </div>
+</footer>
+
+<script>
+    // 简单交互：搜索框提示
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.querySelector('.search-box input');
+        const searchBtn = document.querySelector('.search-box button');
+        if (searchBtn && searchInput) {
+            searchBtn.addEventListener('click', function() {
+                const keyword = searchInput.value.trim();
+                if (keyword) {
+                    alert('搜索功能演示：您正在查找“' + keyword + '”相关漫画。');
+                } else {
+                    alert('请输入漫画名称或关键词。');
+                }
+            });
+        }
+    });
+</script>
+
+</body>
+                  </html>
